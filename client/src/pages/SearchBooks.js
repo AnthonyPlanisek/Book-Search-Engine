@@ -31,15 +31,13 @@ const SearchBooks = () => {
     }
 
     try {
-      const { data } = await saveBook({
-        variables: { ...saveBookIds }
-      })
+      const response = await searchGoogleBooks(searchInput);
 
-      if (!data.ok) {
+      if (!response.ok) {
         throw new Error('something went wrong!');
       }
 
-      const { items } = await data.json();
+      const { items } = await response.json();
 
       const bookData = items.map((book) => ({
         bookId: book.id,
@@ -69,9 +67,11 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
+      const { data } = await saveBook({
+        variables: { ...bookToSave }
+      })
 
-      if (!response.ok) {
+      if (!data.ok) {
         throw new Error('something went wrong!');
       }
 
